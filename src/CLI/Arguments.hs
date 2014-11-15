@@ -1,8 +1,8 @@
-module CLIArgs where
+module CLI.Arguments where
 
 import Options.Applicative
 
-data CLIArgs = CLIArgs
+data Arguments = Arguments
     { admin :: Int
     , stubs :: Int
     , quiet :: Bool
@@ -47,15 +47,15 @@ watchFlag = switch
     <> help "Auto-reload data file when edits are made."
      )
 
-options :: Parser CLIArgs
-options = CLIArgs
+options :: Parser Arguments
+options = Arguments
     <$> adminOption
     <*> stubsOption
     <*> muteFlag
     <*> datafileOption
     <*> watchFlag
 
-opts :: ParserInfo CLIArgs
+opts :: ParserInfo Arguments
 opts = info (helper <*> options)
      ( fullDesc
     <> header "stubby - a small web server for stubbing external systems during development" )

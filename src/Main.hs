@@ -1,5 +1,5 @@
 import Stubby (stubby)
-import CLIArgs (opts)
+import CLI.Arguments (opts)
 import Options.Applicative (execParser)
 
 main :: IO ()

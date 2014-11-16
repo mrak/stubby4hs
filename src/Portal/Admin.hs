@@ -1,12 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Portal.Admin (adminserver) where
+import Prelude hiding (concat)
 import CLI.Arguments (Arguments(..))
 import CLI.Logging (status)
 import Portal.LoggerMiddleware (logger)
 import Network.Wai
-import Network.Wai.Handler.Warp (run)
+import Network.Wai.Handler.Warp (runSettings,setHost,setPort,defaultSettings)
 import Network.HTTP.Types (status200)
-import qualified Data.ByteString.Char8 as BS
+import Data.ByteString.Char8
+import Data.String (fromString)
 
 adminserver' :: Application
 adminserver' _ respond = respond $
@@ -14,11 +16,14 @@ adminserver' _ respond = respond $
 
 adminserver :: Arguments -> IO ()
 adminserver args = do
-    let msg = BS.concat [ "Admin"
+    let port = admin args
+        host = location args
+        settings = setHost (fromString host) $ setPort port defaultSettings
+        msg = concat [ "Admin"
                         , " portal running at http://"
-                        , BS.pack $ location args
+                        , pack host
                         , ":"
-                        , BS.pack $ show (admin args)
+                        , pack $ show port
                         ]
     status msg
-    run (admin args) $ logger args "admin" adminserver'
+    runSettings settings $ logger args "admin" adminserver'

@@ -3,11 +3,22 @@ module Stubby (stubby) where
 import CLI.Arguments
 import Portal.Admin
 import Portal.Stubs
-import Portal.LoggerMiddleware
-import Network.Wai.Handler.Warp (run)
 import Control.Concurrent (forkIO)
+import System.Console.ANSI
+import Control.Monad (unless)
+import Options.Applicative (execParser)
 
-stubby :: Arguments -> IO ()
-stubby (Arguments a s _ _ _) = do
-    _ <- forkIO $ run a $ logger "admin" adminserver
-    run s $ logger "stubs" stubserver
+stubby :: IO ()
+stubby = do
+    args <- execParser arguments
+    quitMessage args
+    _ <- forkIO $ adminserver args
+    stubserver args
+
+quitMessage :: Arguments -> IO ()
+quitMessage (Arguments _ _ q _ _) = unless q $ do
+    setSGR [SetColor Foreground Dull Blue]
+    putStrLn ""
+    putStrLn "Quit: ctrl-c"
+    putStrLn ""
+    setSGR [Reset]

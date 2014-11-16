@@ -1,4 +1,4 @@
-module CLI.Arguments where
+module CLI.Arguments (Arguments(..), arguments) where
 
 import Options.Applicative
 
@@ -55,7 +55,7 @@ options = Arguments
     <*> datafileOption
     <*> watchFlag
 
-opts :: ParserInfo Arguments
-opts = info (helper <*> options)
+arguments :: ParserInfo Arguments
+arguments = info (helper <*> options)
      ( fullDesc
     <> header "stubby - a small web server for stubbing external systems during development" )

@@ -1,46 +1,50 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Portal.LoggerMiddleware (logger) where
 import Prelude hiding (putStr, putStrLn, concat)
+import CLI.Arguments
 import System.Console.ANSI
 import Network.Wai
-import Data.Time.LocalTime
-import Data.Time.Format
-import System.Locale
+import Data.Time.LocalTime (getZonedTime)
+import Data.Time.Format (formatTime)
+import System.Locale (defaultTimeLocale)
 import Data.ByteString.Char8
-import Network.HTTP.Types.Status
+import Network.HTTP.Types.Status (statusCode, statusMessage)
+import Control.Monad (unless)
 
-logger :: ByteString -> Middleware
-logger name = logRequest name . logResponse name
+logger :: Arguments -> ByteString -> Middleware
+logger args name = logRequest args name . logResponse args name
 
-logRequest :: ByteString -> Middleware
-logRequest name app req sendResponse = do
-    t1 <- getZonedTime
-    let method = requestMethod req
-        path   = rawPathInfo req
-        ts1    = pack $ formatTime defaultTimeLocale "%T" t1
-        msg1   = concat [ts1," -> ",method," ",name,path]
-    colorStrLn Dull Cyan msg1
+logRequest :: Arguments -> ByteString -> Middleware
+logRequest (Arguments _ _ q _ _) name app req sendResponse = do
+    unless q $ do
+        t1 <- getZonedTime
+        let method = requestMethod req
+            path   = rawPathInfo req
+            ts1    = pack $ formatTime defaultTimeLocale "%T" t1
+            msg1   = concat [ts1," -> ",method," ",name,path]
+        colorStrLn Dull Cyan msg1
     app req sendResponse
 
-logResponse :: ByteString -> Middleware
-logResponse name app req sendResponse =
+logResponse :: Arguments -> ByteString -> Middleware
+logResponse (Arguments _ _ q _ _) name app req sendResponse =
     app req $ \res -> do
-        t2 <- getZonedTime
-        let status = responseStatus res
-            path   = rawPathInfo req
-            code   = statusCode status
-            color  = colorByStatus code
-            reason = statusMessage status
-            ts2    = pack $ formatTime defaultTimeLocale "%T" t2
-            msg2   = concat [ts2," <- ",(pack . show) code," ",name,path," ",reason]
-        colorStrLn Dull color msg2
+        unless q $ do
+            t2 <- getZonedTime
+            let status = responseStatus res
+                path   = rawPathInfo req
+                code   = statusCode status
+                color  = colorByStatus code
+                reason = statusMessage status
+                ts2    = pack $ formatTime defaultTimeLocale "%T" t2
+                msg2   = concat [ts2," <- ",(pack . show) code," ",name,path," ",reason]
+            colorStrLn Dull color msg2
         sendResponse res
 
 colorStr :: ColorIntensity -> Color -> ByteString -> IO ()
 colorStr fgi fg s = do
     setSGR [SetColor Foreground fgi fg]
     putStr s
-    setSGR []
+    setSGR [Reset]
 
 colorStrLn :: ColorIntensity -> Color -> ByteString -> IO ()
 colorStrLn fgi fg s = colorStr fgi fg s >> putStrLn ""

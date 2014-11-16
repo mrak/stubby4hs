@@ -11,5 +11,5 @@ stubserver' _ respond = respond $
     responseLBS status200 [("Content-Type", "text/plain")] "Hello, World! -- stubs"
 
 stubserver :: Arguments -> IO ()
-stubserver args@(Arguments _ s _ _ _) = do
+stubserver args@(Arguments _ s _ _ _) =
     run s $ logger args "stubs" stubserver'

@@ -11,5 +11,5 @@ adminserver' _ respond = respond $
     responseLBS status200 [("Content-Type", "text/plain")] "Hello, World! -- admin"
 
 adminserver :: Arguments -> IO ()
-adminserver args@(Arguments a _ _ _ _) = do
+adminserver args@(Arguments a _ _ _ _) =
     run a $ logger args "admin" adminserver'

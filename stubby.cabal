@@ -26,7 +26,7 @@ executable stubby
         ansi-terminal,
         transformers,
         bytestring,
-        time,
+        time ==1.5,
         old-locale,
         optparse-applicative >=0.11 && <0.12,
         wai >=3.0 && <3.1,

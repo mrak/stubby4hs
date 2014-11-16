@@ -16,7 +16,7 @@ stubby = do
     stubserver args
 
 quitMessage :: Arguments -> IO ()
-quitMessage (Arguments _ _ q _ _) = unless q $ do
+quitMessage (Arguments _ _ q _ _ _) = unless q $ do
     setSGR [SetColor Foreground Dull Blue]
     putStrLn ""
     putStrLn "Quit: ctrl-c"

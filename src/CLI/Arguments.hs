@@ -8,6 +8,7 @@ data Arguments = Arguments
     , quiet :: Bool
     , datafile :: String
     , watch :: Bool
+    , location :: String
     }
 
 adminOption :: Parser Int
@@ -47,6 +48,14 @@ watchFlag = switch
     <> help "Auto-reload data file when edits are made."
      )
 
+locationOption :: Parser String
+locationOption = strOption
+     ( long "location"
+    <> short 'l'
+    <> metavar "ADDRESS"
+    <> help "Network address at which to bind stubby.")
+    <|> pure "0.0.0.0"
+
 options :: Parser Arguments
 options = Arguments
     <$> adminOption
@@ -54,6 +63,7 @@ options = Arguments
     <*> muteFlag
     <*> datafileOption
     <*> watchFlag
+    <*> locationOption
 
 arguments :: ParserInfo Arguments
 arguments = info (helper <*> options)

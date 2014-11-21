@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Portal.LoggerMiddleware (logger) where
+module Stubby.Net.LoggerMiddleware (logger) where
 import Prelude hiding (error,putStr,putStrLn,concat,dropWhile,tail)
-import CLI.Arguments (Arguments(..))
-import qualified CLI.Logging as L
+import Stubby.CLI.Arguments (Arguments(..))
+import qualified Stubby.CLI.Logging as L
 import Network.Wai
 import Data.Time.LocalTime (getZonedTime)
 import Data.Time.Format (formatTime,defaultTimeLocale)

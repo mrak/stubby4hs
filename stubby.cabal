@@ -1,38 +1,51 @@
-name:                stubby
-version:             0.1.0.0
-synopsis:            A small web server for stubbing external systems during development
+name:                   stubby
+version:                0.1.0.0
+synopsis:               A small web server for stubbing external systems during development
 -- description:
-homepage:            https://github.com/mrak/stubby4hs
-license:             Apache-2.0
-license-file:        LICENSE
-author:              Eric Mrak
-maintainer:          mail@ericmrak.info
-copyright:           2014
-category:            Web
-build-type:          Simple
-cabal-version:       >=1.10
-extra-source-files:
-    README
+homepage:               https://github.com/mrak/stubby4hs
+license:                Apache-2.0
+license-file:           LICENSE
+author:                 Eric Mrak
+maintainer:             mail@ericmrak.info
+copyright:              2014
+category:               Web
+build-type:             Simple
+cabal-version:          >=1.10
+
+extra-source-files:     README
+
+source-repository head
+    type:               git
+    location:           https://github.com/mrak/stubby4hs
 
 executable stubby
-    main-is:             Main.hs
-    hs-source-dirs:      src
-    -- Modules included in this executable, other than Main.
-    -- other-modules:
-    -- LANGUAGE extensions used by modules in this package.
-    other-extensions:    OverloadedStrings
-    build-depends:
-        wai                  >=3.0 && <3.1,
-        base                 >=4.7 && <4.8,
-        time                 >=1.5 && <2.0,
-        warp                 >=3.0 && <3.1,
-        http-types           >=0.8 && <0.9,
-        bytestring           >=0.10.4.0 && <0.11,
-        ansi-terminal        >=0.6.2.1 && <0.7,
-        optparse-applicative >=0.11 && <0.12
-    -- Base language which the package is written in.
-    default-language:    Haskell2010
-    ghc-options:
-        -O
-        -threaded
-        -with-rtsopts=-N
+    main-is:            stubby.hs
+
+    hs-source-dirs:     src
+
+    other-modules:      Stubby.Net.Admin
+                        Stubby.Net.Stubs
+                        Stubby.Net.LoggerMiddleware
+                        Stubby.CLI.Arguments
+                        Stubby.CLI.Logging
+                        Stubby.Data.Endpoint
+                        Stubby.Data.Request
+                        Stubby.Data.Response
+
+    build-depends:      wai,
+                        time,
+                        warp,
+                        http-types,
+                        bytestring,
+                        ansi-terminal,
+                        optparse-applicative,
+                        base                 >=4.7 && <5
+
+    other-extensions:   OverloadedStrings
+
+    default-language:   Haskell2010
+
+    ghc-options:        -O
+                        -threaded
+                        -with-rtsopts=-N
+                        -Wall

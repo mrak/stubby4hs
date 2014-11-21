@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module CLI.Logging ( log
+module Stubby.CLI.Logging ( log
                    , status
                    , info
                    , ok

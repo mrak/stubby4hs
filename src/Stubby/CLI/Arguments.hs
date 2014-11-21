@@ -1,4 +1,4 @@
-module CLI.Arguments (Arguments(..), arguments) where
+module Stubby.CLI.Arguments (Arguments(..), arguments) where
 
 import Options.Applicative
 

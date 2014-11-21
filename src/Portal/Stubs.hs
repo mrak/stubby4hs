@@ -26,4 +26,4 @@ stubserver args = do
                         , pack $ show port
                         ]
     status msg
-    runSettings settings $ logger args "stubs" stubserver'
+    runSettings settings $ logger args stubserver'

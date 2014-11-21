@@ -19,7 +19,7 @@ status :: ByteString -> IO ()
 status = colorStrLn Vivid Black
 
 info :: ByteString -> IO ()
-info = colorStrLn Dull Black
+info = colorStrLn Dull Blue
 
 ok :: ByteString -> IO ()
 ok = colorStrLn Dull Green

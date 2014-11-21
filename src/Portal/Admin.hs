@@ -26,4 +26,4 @@ adminserver args = do
                         , pack $ show port
                         ]
     status msg
-    runSettings settings $ logger args "admin" adminserver'
+    runSettings settings $ logger args adminserver'

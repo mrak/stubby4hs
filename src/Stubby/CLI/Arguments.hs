@@ -29,8 +29,8 @@ stubsOption = option auto
 
 muteFlag :: Parser Bool
 muteFlag = switch
-     ( long "mute"
-    <> short 'm'
+     ( long "quiet"
+    <> short 'q'
     <> help "Prevent stubby from printing to the console.")
 
 datafileOption :: Parser String

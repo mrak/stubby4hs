@@ -5,7 +5,8 @@ import Stubby.CLI.Arguments (Arguments(..))
 import qualified Stubby.CLI.Logging as L
 import Network.Wai
 import Data.Time.LocalTime (getZonedTime)
-import Data.Time.Format (formatTime,defaultTimeLocale)
+import Data.Time.Format (formatTime)
+import System.Locale (defaultTimeLocale)
 import Data.ByteString.Char8
 import Network.HTTP.Types.Status (statusCode,statusMessage)
 import Control.Monad (unless)

@@ -37,6 +37,7 @@ executable stubby
                         text,
                         warp,
                         yaml,
+                        old-locale,
                         http-types,
                         bytestring,
                         ansi-terminal,

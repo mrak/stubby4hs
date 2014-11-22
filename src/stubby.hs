@@ -10,7 +10,7 @@ import qualified Data.ByteString.Char8 as BS
 import Data.Yaml (decode)
 import Data.Text.Encoding (encodeUtf8)
 
-import Control.Monad (mapM_,unless)
+import Control.Monad (unless)
 import Options.Applicative (execParser)
 import GHC.Conc.Sync
 import Control.Exception
@@ -38,7 +38,7 @@ printLoaded :: [Endpoint] -> IO ()
 printLoaded es = mapM_ f es
     where f e = let r = request e
                     u = encodeUtf8 $ url r
-                    m = encodeUtf8 $ method r
+                    m = method r
                 in  stored $ BS.concat ["Loaded ",m," ",u]
 
 quitMessage :: IO ()

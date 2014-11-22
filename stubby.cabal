@@ -40,6 +40,7 @@ executable stubby
                         old-locale,
                         http-types,
                         bytestring,
+                        scientific,
                         ansi-terminal,
                         optparse-applicative,
                         base                 >=4.7 && <5

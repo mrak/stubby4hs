@@ -1,6 +1,6 @@
 - request:
     url: '/'
-    method: GET
+    method: GET,HEAD
   response:
     body: yo
-    status: 200
+    status: 201

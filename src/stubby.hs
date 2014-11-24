@@ -30,15 +30,15 @@ parseEndpoints f =  do
     c <- catch (BS.readFile f) readHandler
     case decode c :: Maybe [Endpoint] of
          Just a  -> return a
-         Nothing -> return []
+         Nothing -> error "Cannot parse data file"
     where readHandler e | isDoesNotExistError e = return "[]"
                         | otherwise             = ioError e
 
 printLoaded :: [Endpoint] -> IO ()
-printLoaded es = mapM_ f es
+printLoaded = mapM_ f
     where f e = let r = request e
                     u = encodeUtf8 $ url r
-                    m = method r
+                    m = BS.pack $ show $ method r
                 in  stored $ BS.concat ["Loaded ",m," ",u]
 
 quitMessage :: IO ()

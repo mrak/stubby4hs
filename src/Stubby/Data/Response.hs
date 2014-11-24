@@ -10,7 +10,7 @@ import Network.HTTP.Types
 import Control.Applicative
 import Data.Scientific
 import Data.ByteString.Char8
-import Data.Maybe
+import Control.Monad (mzero)
 
 data Response = Response
     { status :: Status
@@ -18,20 +18,21 @@ data Response = Response
     } deriving (Show,Generic)
 
 instance FromJSON Response where
-    parseJSON (Object o) = Response <$>
-                           o .: "status" <*>
-                           o .: "body"
-    parseJSON _ = error "Response cannot be parsed"
+    parseJSON (Object o) = Response <$> o .: "status"
+                                    <*> o .: "body"
+    parseJSON _ = mzero
 
 instance FromJSON Status where
-    parseJSON (Number n) | n < 100 || n > 599  = statusError
-                         | otherwise = return $ Status (getCode n) (getPhrase n)
-    parseJSON _ = statusError
+    parseJSON (Number n) = case toBoundedInteger n of
+                                Nothing -> mzero
+                                Just i -> parseStatus i
+    parseJSON _ = mzero
 
-getCode :: Scientific -> Int
-getCode c = fromMaybe statusError (toBoundedInteger c)
+parseStatus :: Int -> Parser Status
+parseStatus n | n < 100 || n > 599  = mzero
+              | otherwise = return $ Status n (getPhrase n)
 
-getPhrase :: Scientific -> ByteString
+getPhrase :: Int -> ByteString
 getPhrase i | i == 100 = "Continue"
             | i == 101 = "Switching Protocols"
             | i == 102 = "Processing"
@@ -96,6 +97,3 @@ getPhrase i | i == 100 = "Continue"
             | i == 510 = "Not Extended"
             | i == 511 = "Network Authentication Required"
             | otherwise = ""
-
-statusError :: forall t. t
-statusError = error "Status cannot be parsed"

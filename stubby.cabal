@@ -42,8 +42,9 @@ executable stubby
                         bytestring,
                         scientific,
                         ansi-terminal,
+                        unordered-containers,
                         optparse-applicative,
-                        base                 >=4.7 && <5
+                        base >=4.7 && <5
 
     other-extensions:   OverloadedStrings
 

@@ -11,7 +11,7 @@ data Endpoint = Endpoint
     }
 
 instance FromJSON Endpoint where
-    parseJSON (Object o) = Endpoint <$>
-                           o .: "request" <*>
-                           o .: "response"
+    parseJSON (Object o) = Endpoint <$> o .: "request"
+                                    <*> o .: "response"
     parseJSON _ = error "Endpoint error"
+

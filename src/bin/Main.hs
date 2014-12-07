@@ -1,3 +1,4 @@
+module Main where
 import Stubby (stubby, wait)
 import Stubby.CLI.Settings (argParser)
 import Options.Applicative (execParser)

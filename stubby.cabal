@@ -18,19 +18,23 @@ source-repository head
     type:               git
     location:           https://github.com/mrak/stubby4hs
 
-executable stubby
-    main-is:            main.hs
+library
+    hs-source-dirs:     src/lib
 
-    hs-source-dirs:     src
+    exposed-modules:    Stubby
+                        Stubby.CLI.Settings
 
     other-modules:      Stubby.Net.Admin
                         Stubby.Net.Stubs
                         Stubby.Net.LoggerMiddleware
-                        Stubby.CLI.Settings
                         Stubby.CLI.Logging
                         Stubby.Data.Endpoint
                         Stubby.Data.Request
                         Stubby.Data.Response
+
+    other-extensions:   OverloadedStrings
+
+    default-language:   Haskell2010
 
     build-depends:      wai,
                         time,
@@ -44,6 +48,20 @@ executable stubby
                         scientific,
                         ansi-terminal,
                         unordered-containers,
+                        optparse-applicative,
+                        base >=4.7 && <5
+
+    ghc-options:        -O
+                        -threaded
+                        -with-rtsopts=-N
+                        -Wall
+
+executable stubby
+    main-is:            Main.hs
+
+    hs-source-dirs:     src/bin
+
+    build-depends:      stubby,
                         optparse-applicative,
                         base >=4.7 && <5
 

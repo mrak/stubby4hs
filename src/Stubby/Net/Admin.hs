@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Stubby.Net.Admin (adminserver) where
 import Prelude hiding (concat)
-import Stubby.CLI.Arguments (Arguments(..))
+import Stubby.CLI.Settings (Settings, getAdmin, getLocation)
 import Stubby.CLI.Logging (status)
 import Stubby.Net.LoggerMiddleware (logger)
 import Network.Wai
@@ -14,10 +14,10 @@ adminserver' :: Application
 adminserver' _ respond = respond $
     responseLBS status200 [("Content-Type", "text/plain")] "Hello, World! -- admin"
 
-adminserver :: Arguments -> IO ()
+adminserver :: Settings -> IO ()
 adminserver args = do
-    let port = admin args
-        host = location args
+    let port = getAdmin args
+        host = getLocation args
         settings = setHost (fromString host) $ setPort port defaultSettings
         msg = concat [ "Admin"
                         , " portal running at http://"

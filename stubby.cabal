@@ -19,14 +19,14 @@ source-repository head
     location:           https://github.com/mrak/stubby4hs
 
 executable stubby
-    main-is:            stubby.hs
+    main-is:            main.hs
 
     hs-source-dirs:     src
 
     other-modules:      Stubby.Net.Admin
                         Stubby.Net.Stubs
                         Stubby.Net.LoggerMiddleware
-                        Stubby.CLI.Arguments
+                        Stubby.CLI.Settings
                         Stubby.CLI.Logging
                         Stubby.Data.Endpoint
                         Stubby.Data.Request
@@ -37,6 +37,7 @@ executable stubby
                         text,
                         warp,
                         yaml,
+                        async,
                         old-locale,
                         http-types,
                         bytestring,

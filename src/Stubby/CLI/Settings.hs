@@ -1,8 +1,19 @@
-module Stubby.CLI.Arguments (Arguments(..), arguments) where
+module Stubby.CLI.Settings (
+      Settings
+    , getAdmin
+    , getStubs
+    , getQuiet
+    , getDatafile
+    , getWatch
+    , getLocation
+
+    , defaultSettings
+    , argParser
+    ) where
 
 import Options.Applicative
 
-data Arguments = Arguments
+data Settings = Settings
     { admin :: Int
     , stubs :: Int
     , quiet :: Bool
@@ -11,13 +22,41 @@ data Arguments = Arguments
     , location :: String
     }
 
+defaultSettings :: Settings
+defaultSettings = Settings
+    { admin = 8889
+    , stubs = 8882
+    , quiet = True
+    , datafile = ""
+    , watch = False
+    , location = "0.0.0.0"
+    }
+
+getAdmin :: Settings -> Int
+getAdmin = admin
+
+getStubs :: Settings -> Int
+getStubs = stubs
+
+getQuiet :: Settings -> Bool
+getQuiet = quiet
+
+getDatafile :: Settings -> String
+getDatafile = datafile
+
+getWatch :: Settings -> Bool
+getWatch = watch
+
+getLocation :: Settings -> String
+getLocation = location
+
 adminOption :: Parser Int
 adminOption = option auto
      ( long "admin"
     <> short 'a'
     <> metavar "PORT"
     <> help "Port for admin portal. Defaults to 8889.")
-    <|> pure 8889
+    <|> pure (getAdmin defaultSettings)
 
 stubsOption :: Parser Int
 stubsOption = option auto
@@ -25,10 +64,10 @@ stubsOption = option auto
     <> short 's'
     <> metavar "PORT"
     <> help "Port for stubs portal. Defaults to 8882.")
-    <|> pure 8882
+    <|> pure (getStubs defaultSettings)
 
-muteFlag :: Parser Bool
-muteFlag = switch
+quietFlag :: Parser Bool
+quietFlag = switch
      ( long "quiet"
     <> short 'q'
     <> help "Prevent stubby from printing to the console.")
@@ -39,7 +78,7 @@ datafileOption = strOption
     <> short 'd'
     <> metavar "FILE"
     <> help "Data file to pre-load endoints. YAML or JSON format.")
-    <|> pure ""
+    <|> pure (getDatafile defaultSettings)
 
 watchFlag :: Parser Bool
 watchFlag = switch
@@ -54,18 +93,18 @@ locationOption = strOption
     <> short 'l'
     <> metavar "ADDRESS"
     <> help "Network address at which to bind stubby.")
-    <|> pure "0.0.0.0"
+    <|> pure (getLocation defaultSettings)
 
-options :: Parser Arguments
-options = Arguments
+options :: Parser Settings
+options = Settings
     <$> adminOption
     <*> stubsOption
-    <*> muteFlag
+    <*> quietFlag
     <*> datafileOption
     <*> watchFlag
     <*> locationOption
 
-arguments :: ParserInfo Arguments
-arguments = info (helper <*> options)
+argParser :: ParserInfo Settings
+argParser = info (helper <*> options)
      ( fullDesc
     <> header "stubby - a small web server for stubbing external systems during development" )

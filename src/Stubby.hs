@@ -1,5 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
-import Stubby.CLI.Arguments
+module Stubby (
+       stubby
+     , Stubby
+     , getAdmin
+     , getStubs
+     , wait
+     ) where
+
+import Stubby.CLI.Settings (Settings, getQuiet, getDatafile)
 import Stubby.CLI.Logging (info,stored)
 import Stubby.Net.Admin (adminserver)
 import Stubby.Net.Stubs (stubserver)
@@ -11,19 +19,32 @@ import Data.Yaml (decode)
 import Data.Text.Encoding (encodeUtf8)
 
 import Control.Monad (unless)
-import Options.Applicative (execParser)
-import GHC.Conc.Sync
+import Control.Concurrent.Async (Async, async, waitEither_)
 import Control.Exception
 import System.IO.Error
 
-main :: IO ()
-main = do
-    args <- execParser arguments
-    endpoints <- parseEndpoints (datafile args)
-    unless (quiet args) $ printLoaded endpoints >> quitMessage
+stubby :: Settings -> IO Stubby
+stubby settings = do
+    endpoints <- parseEndpoints (getDatafile settings)
+    unless (getQuiet settings) $ printLoaded endpoints >> quitMessage
 
-    _ <- forkIO $ adminserver args
-    stubserver args
+    admin <- async $ adminserver settings
+    stubs <- async $ stubserver settings
+    return $ Stubby admin stubs
+
+data Stubby = Stubby
+    { adminThread :: Async ()
+    , stubsThread :: Async ()
+    }
+
+getAdmin :: Stubby -> Async ()
+getAdmin = adminThread
+
+getStubs :: Stubby -> Async ()
+getStubs = stubsThread
+
+wait :: Stubby -> IO ()
+wait s = waitEither_ (getAdmin s) (getStubs s)
 
 parseEndpoints :: FilePath -> IO [Endpoint]
 parseEndpoints f =  do

@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Stubby.Net.Stubs (stubserver) where
 import Prelude hiding (concat)
-import Stubby.CLI.Arguments (Arguments(..))
+import Stubby.CLI.Settings (Settings, getStubs, getLocation)
 import Stubby.CLI.Logging (status)
 import Stubby.Net.LoggerMiddleware (logger)
 import Network.Wai
@@ -14,10 +14,10 @@ stubserver' :: Application
 stubserver' _ respond = respond $
     responseLBS status200 [("Content-Type", "text/plain")] "Hello, World! -- stubs"
 
-stubserver :: Arguments -> IO ()
+stubserver :: Settings -> IO ()
 stubserver args = do
-    let port = stubs args
-        host = location args
+    let port = getStubs args
+        host = getLocation args
         settings = setHost (fromString host) $ setPort port defaultSettings
         msg = concat [ "Stubs"
                         , " portal running at http://"

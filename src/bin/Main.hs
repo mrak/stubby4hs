@@ -1,7 +1,6 @@
 module Main where
 import Stubby (stubby, wait)
-import Stubby.CLI.Settings (argParser)
-import Options.Applicative (execParser)
+import Stubby.Settings (stubbyArgs)
 
 main :: IO ()
-main = execParser argParser >>= stubby >>= wait
+main = stubbyArgs >>= stubby >>= wait

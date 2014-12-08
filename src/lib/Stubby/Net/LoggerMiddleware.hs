@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Stubby.Net.LoggerMiddleware (logger) where
 import Prelude hiding (error,putStr,putStrLn,concat,dropWhile,tail)
-import Stubby.CLI.Settings (Settings, getAdmin, getQuiet)
+import Stubby.Settings (Settings, getAdmin, getQuiet)
 import qualified Stubby.CLI.Logging as L
 import Network.Wai
 import Data.Time.LocalTime (getZonedTime)

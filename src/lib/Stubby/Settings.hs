@@ -1,4 +1,4 @@
-module Stubby.CLI.Settings (
+module Stubby.Settings (
       Settings
     , getAdmin
     , getStubs
@@ -8,7 +8,7 @@ module Stubby.CLI.Settings (
     , getLocation
 
     , defaultSettings
-    , argParser
+    , stubbyArgs
     ) where
 
 import Options.Applicative
@@ -104,7 +104,7 @@ options = Settings
     <*> watchFlag
     <*> locationOption
 
-argParser :: ParserInfo Settings
-argParser = info (helper <*> options)
+stubbyArgs :: IO Settings
+stubbyArgs = execParser $ info (helper <*> options)
      ( fullDesc
     <> header "stubby - a small web server for stubbing external systems during development" )

@@ -22,7 +22,7 @@ library
     hs-source-dirs:     src/lib
 
     exposed-modules:    Stubby
-                        Stubby.CLI.Settings
+                        Stubby.Settings
 
     other-modules:      Stubby.Net.Admin
                         Stubby.Net.Stubs

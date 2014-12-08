@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Stubby.Net.Admin (adminserver) where
 import Prelude hiding (concat)
-import Stubby.CLI.Settings (Settings, getAdmin, getLocation)
+import Stubby.Settings (Settings, getAdmin, getLocation)
 import Stubby.CLI.Logging (status)
 import Stubby.Net.LoggerMiddleware (logger)
 import Network.Wai

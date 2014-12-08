@@ -7,7 +7,7 @@ module Stubby (
      , wait
      ) where
 
-import Stubby.CLI.Settings (Settings, getQuiet, getDatafile)
+import Stubby.Settings (Settings, getQuiet, getDatafile)
 import Stubby.CLI.Logging (info,stored)
 import Stubby.Net.Admin (adminserver)
 import Stubby.Net.Stubs (stubserver)

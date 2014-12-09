@@ -57,9 +57,9 @@ parseEndpoints f =  do
 
 printLoaded :: [Endpoint] -> IO ()
 printLoaded = mapM_ f
-    where f e = let r = request e
-                    u = encodeUtf8 $ url r
-                    m = BS.pack $ show $ method r
+    where f e = let r = getRequest e
+                    u = encodeUtf8 $ getUrl r
+                    m = BS.pack $ show $ getMethods r
                 in  stored $ BS.concat ["Loaded ",m," ",u]
 
 quitMessage :: IO ()

@@ -8,7 +8,7 @@ import Data.Time.LocalTime (getZonedTime)
 import Data.Time.Format (formatTime)
 import System.Locale (defaultTimeLocale)
 import Data.ByteString.Char8
-import Network.HTTP.Types.Status (statusCode,statusMessage)
+import Network.HTTP.Types.Status
 import Control.Monad (unless)
 import Control.Applicative
 
@@ -39,7 +39,7 @@ logResponse args app req sendResponse =
                 path   = rawPathInfo req
                 ts2    = pack $ formatTime defaultTimeLocale "%T" t2
                 msg2   = concat [ts2," <- ",(pack . show) code," [",name,"]",path," ",reason]
-            outgoing code msg2
+            outgoing status msg2
         sendResponse res
 
 portalName :: Settings -> Request -> ByteString
@@ -52,9 +52,9 @@ portalName args req =
           eqAdmin   = (== (intToBS $ getAdmin args))
           intToBS   = pack . show
 
-outgoing :: Int -> ByteString -> IO ()
-outgoing code
-    | code < 200 = L.info
-    | code < 300 = L.ok
-    | code < 400 = L.warn
-    | otherwise  = L.error
+outgoing :: Status -> ByteString -> IO ()
+outgoing s
+    | statusIsInformational s = L.info
+    | statusIsSuccessful    s = L.ok
+    | statusIsRedirection   s = L.warn
+    | otherwise               = L.error

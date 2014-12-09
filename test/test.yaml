@@ -1,6 +1,22 @@
 - request:
-    url: '/'
+    url: '/one'
     method: GET,HEAD
   response:
     body: yo
     status: 201
+
+- request:
+    url: '/two'
+    method: GET
+  response:
+    body: hello
+
+- request:
+    url: '/three'
+    method: HEAD
+
+- request:
+    url: '/four'
+    method: GET
+  response:
+    status: 400

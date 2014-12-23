@@ -56,7 +56,7 @@ adminOption = option auto
     <> short 'a'
     <> metavar "PORT"
     <> help "Port for admin portal. Defaults to 8889.")
-    <|> pure (getAdmin defaultSettings)
+   <|> pure (getAdmin defaultSettings)
 
 stubsOption :: Parser Int
 stubsOption = option auto
@@ -64,7 +64,7 @@ stubsOption = option auto
     <> short 's'
     <> metavar "PORT"
     <> help "Port for stubs portal. Defaults to 8882.")
-    <|> pure (getStubs defaultSettings)
+   <|> pure (getStubs defaultSettings)
 
 quietFlag :: Parser Bool
 quietFlag = switch
@@ -78,7 +78,7 @@ datafileOption = strOption
     <> short 'd'
     <> metavar "FILE"
     <> help "Data file to pre-load endoints. YAML or JSON format.")
-    <|> pure (getDatafile defaultSettings)
+   <|> pure (getDatafile defaultSettings)
 
 watchFlag :: Parser Bool
 watchFlag = switch
@@ -93,7 +93,7 @@ locationOption = strOption
     <> short 'l'
     <> metavar "ADDRESS"
     <> help "Network address at which to bind stubby.")
-    <|> pure (getLocation defaultSettings)
+   <|> pure (getLocation defaultSettings)
 
 options :: Parser Settings
 options = Settings

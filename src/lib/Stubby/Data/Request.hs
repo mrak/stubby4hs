@@ -1,5 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# OPTIONS_GHC -fno-warn-orphans #-}
 module Stubby.Data.Request
      ( Request
      , defaultRequest
@@ -7,17 +6,17 @@ module Stubby.Data.Request
      , getMethods
      , getPost
      , getFile
+     , getHeaders
+     , getQuery
      ) where
-import Prelude as P
 import Stubby.Data.Common (parseHeaders)
 import Network.HTTP.Types (Query, Method, RequestHeaders, methodGet)
-import Control.Applicative
+import Control.Applicative ((<$>), (<*>))
 import Control.Monad (mzero)
-import Data.Text
-import Data.Text.Encoding
+import Data.Text (Text)
+import Data.Text.Encoding (encodeUtf8)
 import Data.Yaml
-import qualified Data.HashMap.Strict as HM
-import qualified Data.ByteString.Char8 as BS
+import qualified Data.HashMap.Strict as HM (lookup, foldrWithKey)
 
 data Request = Request
     { url     :: Text
@@ -50,6 +49,12 @@ getPost = post
 getFile :: Request -> Maybe FilePath
 getFile = file
 
+getHeaders :: Request -> RequestHeaders
+getHeaders = headers
+
+getQuery :: Request -> Query
+getQuery = query
+
 instance FromJSON Request where
     parseJSON (Object o) = Request <$> o .:  "url"
                                    <*> parseMethods o
@@ -77,7 +82,3 @@ parseQueryParam k v a = case v
                         of   (String s) -> (encodeUtf8 k, Just (encodeUtf8 s)):a
                              Null       -> (encodeUtf8 k, Nothing):a
                              _          -> a
-
-instance FromJSON BS.ByteString where
-    parseJSON (String s) = return $ encodeUtf8 s
-    parseJSON _ = mzero

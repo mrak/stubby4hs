@@ -11,17 +11,17 @@ import Stubby.Settings (Settings, getQuiet, getDatafile)
 import Stubby.CLI.Logging (info,stored)
 import Stubby.Net.Admin (adminserver)
 import Stubby.Net.Stubs (stubserver)
-import Stubby.Data.Endpoint
-import Stubby.Data.Request
+import Stubby.Data.Endpoint (Endpoint, getRequest)
+import Stubby.Data.Request (getUrl, getMethods)
 
-import qualified Data.ByteString.Char8 as BS
+import qualified Data.ByteString.Char8 as BS (readFile, pack, concat)
 import Data.Yaml (decode)
 import Data.Text.Encoding (encodeUtf8)
 
 import Control.Monad (unless)
 import Control.Concurrent.Async (Async, async, waitEither_)
-import Control.Exception
-import System.IO.Error
+import Control.Exception (catch)
+import System.IO.Error (isDoesNotExistError)
 
 stubby :: Settings -> IO Stubby
 stubby settings = do

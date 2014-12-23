@@ -5,11 +5,11 @@ module Stubby.Data.Endpoint
      , getRequest
      , getResponses
      ) where
-import Stubby.Data.Request
-import Stubby.Data.Response
+import Stubby.Data.Request (Request, defaultRequest)
+import Stubby.Data.Response (Response, defaultResponse)
 import Data.Yaml
-import Control.Applicative
-import qualified Data.HashMap.Strict as HM
+import qualified Data.HashMap.Strict as HM (lookup)
+import Control.Applicative ((<$>), (<*>), pure)
 import Control.Monad (mzero)
 
 data Endpoint = Endpoint

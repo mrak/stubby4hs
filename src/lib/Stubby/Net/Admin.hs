@@ -4,10 +4,10 @@ import Prelude hiding (concat)
 import Stubby.Settings (Settings, getAdmin, getLocation)
 import Stubby.CLI.Logging (status)
 import Stubby.Net.LoggerMiddleware (logger)
-import Network.Wai
+import Network.Wai (Application, responseLBS)
 import Network.Wai.Handler.Warp (runSettings,setHost,setPort,defaultSettings)
 import Network.HTTP.Types (status200)
-import Data.ByteString.Char8
+import Data.ByteString.Char8 (pack, concat)
 import Data.String (fromString)
 
 adminserver' :: Application

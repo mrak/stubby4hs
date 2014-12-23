@@ -1,9 +1,17 @@
 - request:
     url: '/one'
     method: GET,HEAD
+    headers:
+      content-type: application/json
+    query:
+      param: 'set!'
+      empty:
   response:
     body: yo
     status: 201
+    headers:
+      yes: 'yes'
+      no: 'no'
 
 - request:
     url: '/two'

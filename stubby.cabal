@@ -31,6 +31,7 @@ library
                         Stubby.Data.Endpoint
                         Stubby.Data.Request
                         Stubby.Data.Response
+                        Stubby.Data.Common
 
     other-extensions:   OverloadedStrings
 
@@ -47,6 +48,7 @@ library
                         bytestring,
                         scientific,
                         ansi-terminal,
+                        case-insensitive,
                         unordered-containers,
                         optparse-applicative,
                         base >=4.7 && <5

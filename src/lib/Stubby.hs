@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Stubby (
-       stubby
+module Stubby
+     ( stubby
      , Stubby
      , getAdmin
      , getStubs
@@ -26,7 +26,7 @@ import System.IO.Error (isDoesNotExistError)
 stubby :: Settings -> IO Stubby
 stubby settings = do
     endpoints <- parseEndpoints (getDatafile settings)
-    unless (getQuiet settings) $ printLoaded endpoints >> quitMessage
+    unless (getQuiet settings) $ startupMessages endpoints
 
     admin <- async $ adminserver settings
     stubs <- async $ stubserver settings
@@ -62,5 +62,5 @@ printLoaded = mapM_ f
                     m = BS.pack $ show $ getMethods r
                 in  stored $ BS.concat ["Loaded ",m," ",u]
 
-quitMessage :: IO ()
-quitMessage = info "" >> info "Quit: ctrl-c" >> info ""
+startupMessages :: [Endpoint] -> IO ()
+startupMessages es = printLoaded es >> info "\nQuit: ctrl-c\n"
